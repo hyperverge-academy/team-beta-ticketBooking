@@ -1,6 +1,6 @@
-const modelResponse = function (){
-    let modelString = 'Suceessful beta operation'
-    return modelString
+const response = function (){
+    let string = 'Suceessful beta operation'
+    return string
 }
 
-module.exports = {modelResponse};
+module.exports = {response};
