@@ -1,6 +1,7 @@
 const model = require('../models/health.model')
-const getservice = function(){
-    return model.response();
+const getService = function(){
+    return model.modelResponse();
 }
 
-module.exports = {getservice};
+module.exports = {getService};
+
