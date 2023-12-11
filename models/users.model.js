@@ -10,8 +10,8 @@ const saveBooking = async (bookingData) => {
         console.log('Booking saved:', bookingData);
         const result = await bookings.insertOne(bookingData);
 
-        let modelString = {'Message':'Group Beta Suceessfully Booked Ticket'};
-        return modelString;
+        let modelObject = {'Message':'Group Beta Suceessfully Booked Ticket'};
+        return modelObject;
 
     } catch (error) {
         console.error('Error saving booking:', error);
