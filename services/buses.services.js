@@ -21,7 +21,7 @@ const CheckValidation = function (busData) {
 
     const validDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     for (let i = 0; i < validDays.length; i++) {
-        if (busData.days === (validDays[i])) {
+        if (busData.days !== (validDays[i])) {
             const statusData = {
                 status: false,
                 statusCode: 404,
