@@ -4,4 +4,3 @@ const getService = function(){
 }
 
 module.exports = {getService};
-
