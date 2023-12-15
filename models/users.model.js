@@ -3,31 +3,34 @@ const dbconst = require("../constants/db.constants");
 const resConst = require("../constants/response.constants");
 
 let collection;
-async function main() {
+async function connectDb() {
   const client = new MongoClient(dbconst.url);
   await client.connect();
   console.log("Connected successfully to database");
   const db = client.db(dbconst.dbName);
   collection = db.collection(dbconst.userCollection);
 }
-main();
 
-const postResponse = async function (data) {
+const registerPostResponse = async function (data) {
   try {
+    const convertRegisterData = {
+      mobileNumber : parseInt(data.mobileNumber),
+      password : data.password
+    }
     const info = collection.find({});
     const documents = await info.toArray();
-    let arrayData = [];
+    let registerData = [];
     for (let doc of documents) {
-      arrayData.push(doc.mobileNumber);
-      arrayData.push(doc.password);
+       registerData.push(doc.mobileNumber);
+       registerData.push(doc.password);
     }
     if (
-      arrayData.includes(data.password) &&
-      arrayData.includes(data.mobileNumber)
+       registerData.includes(data.password) &&
+       registerData.includes(data.mobileNumber)
     ) {
       return resConst.existDataMessage.message;
     } else {
-      const result = await collection.insertOne(data);
+      const result = await collection.insertOne(convertRegisterData);
       return resConst.registerMessage.massage;
     }
   } catch (error) {
@@ -35,8 +38,6 @@ const postResponse = async function (data) {
     return error;
   }
 };
-
-
 
 const saveBooking = async (bookingData) => {
   const client = new MongoClient(uri);
@@ -55,4 +56,6 @@ const saveBooking = async (bookingData) => {
     }
 }
 
-module.exports = { saveBooking , postResponse};
+connectDb();
+
+module.exports = { saveBooking , registerPostResponse};

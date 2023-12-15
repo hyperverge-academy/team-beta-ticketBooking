@@ -3,9 +3,16 @@ const  userModel  = require('../models/users.model');
 const resconst = require('../constants/response.constants');
 
 const registrationPostService = async function (data) {
-    return await userModel.postResponse(data);
+    if (!data.mobileNumber || !data.password){
+        return resconst.fieldMissingError;
+    }
+    if (data.mobileNumber !== 10 && data.password.length !== 8 ) {
+        return resconst.mobileAndPasswordError;
+    }
+    return await userModel.registerPostResponse(data);
+
 };
-   
+
 const validateBookingData = async (bookingData) => {
     if (!bookingData.passenger_name || !bookingData.passenger_age || !bookingData.passenger_gender || !bookingData.bus_id || 
         !bookingData.arrival_dateTime || !bookingData.departure_dateTime || !bookingData.from || !bookingData.to || 
@@ -28,19 +35,19 @@ const validateBookingData = async (bookingData) => {
     }
 
     if ((bookingData.arrival_dataTime)) {
-        return resconst.busArrival_dataTimeError;
+        return resconst.busArrivalDataTimeError;
     }
 
     if (new Date (bookingData.departure_dateTime) < new Date()) {
-        return resconst.busDeparture_dateTimeError;
+        return resconst.busDepartureDateTimeError;
     }
 
     if (!bookingData.price || bookingData.price > 10000) {
-        return resconst.busTicketPrice_Error;
+        return resconst.busTicketPriceError;
     }
 
     const bookingCall = await userModel.saveBooking(bookingData);
     return bookingCall;
 };
 
-module.exports = { validateBookingData , registrationPostService };
+module.exports = { validateBookingData , registrationPostService  };
