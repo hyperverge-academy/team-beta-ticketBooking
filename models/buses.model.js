@@ -1,18 +1,18 @@
 let { MongoClient } = require('mongodb');
-const uri = "mongodb://127.0.0.1:27017/"
+const dbConstans = require('../constants/db.constants');
 
-async function insertBusDetails(doc) {
-    const client = new MongoClient(uri);
+async function insertBusDetails(allBusDetails) {
+    const client = new MongoClient(dbConstans.uri);
     try {
-        const database=client.db('busBookings')
-        const collection =database.collection("Buses")
+        const database=client.db(dbConstans.dbName);
+        const collection =database.collection(dbConstans.collectionsName)
 
-        const result= await collection.insertOne(doc)
+        const inserData= await collection.insertOne(allBusDetails)
 
-        const sendRespons= {
+        const responsMessage= {
             message:"Your data has successfully been inserted into the database"
         }
-        return sendRespons
+        return responsMessage
 
     } finally {
         await client.close();

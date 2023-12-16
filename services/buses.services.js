@@ -1,45 +1,30 @@
-const busModels = require('../models/buses.model')
+const busModels = require('../models/buses.model');
 
-const CheckValidation = function (busData) {
+const constResponse = require('../constants/response.constants');
+
+const validateInsertBusDetails = function (busData) {
     if (!busData.bus_name || !busData.from || !busData.to || !busData.days || !busData.total_seats || !busData.total_time || !busData.bus_stops) {
-        const statusData = {
-            status: false,
-            statusCode: 404,
-            data: { message: "please enter all details" }
-        }
-        return statusData
+
+        return constResponse.missingFieldsErrorResponse;
     }
 
-    if (isNaN(busData.total_seats) || busData.total_seats<=0) {
-        const statusData = {
-            status: false,
-            statusCode: 404,
-            data: { message: "Total seats must be a positive number." }
-        };
-        return statusData;
+    if (isNaN(busData.total_seats) || busData.total_seats <= 0) {
+
+        return constResponse.invalidSeatsErrorResponse;
+    }
+
+    if (!Array.isArray(busData.days) || busData.days.length === 0) {
+
+        return constResponse.invalidDaysArrayErrorResponse;
     }
 
     const validDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    for (let i = 0; i < validDays.length; i++) {
-        if (busData.days !== (validDays[i])) {
-            const statusData = {
-                status: false,
-                statusCode: 404,
-                data: { message: "Invalid days. Please provide valid days." }
-            };
-            return statusData;
-        }
+    for (let i = 0; i < busData.days.length; i++) {
+        if (!validDays.includes(busData.days[i])) {
+            return constResponse.invalidDaysErrorResponse;
+        }        
     }
-    if (!Array.isArray(busData.days) || busData.days.length === 0) {
-        const statusData = {
-            status: false,
-            statusCode: 404,
-            data: { message: "Invalid days. Please provide an array of valid days." }
-        };
-        return statusData;
-    }
-
     return busModels.insertBusDetails(busData)
 }
 
-module.exports = { CheckValidation }
+module.exports = { validateInsertBusDetails }
