@@ -2,16 +2,29 @@
 const  userModel  = require('../models/users.model');
 const resconst = require('../constants/response.constants');
 
+
 const registrationPostService = async function (data) {
     if (!data.mobileNumber || !data.password){
         return resconst.fieldMissingError;
     }
-    if (data.mobileNumber !== 10 && data.password.length !== 8 ) {
+    if (data.mobileNumber.length !== 10 && data.password.length !== 8 ) {
         return resconst.mobileAndPasswordError;
     }
-    return await userModel.registerPostResponse(data);
+    return await userModel.registerResponseDB(data);
 
 };
+
+
+
+const loginPostService = async function (userData){
+    if (!userData.mobileNumber || !userData.password){
+        return resconst.fieldMissingError;
+    }
+    if (userData.mobileNumber.length !== 10 && userData.password.lengh !== 8  ){
+        return resconst.mobileAndPasswordError;
+    }
+    return await userModel.loginPost(userData);
+}
 
 const validateBookingData = async (bookingData) => {
     if (!bookingData.passenger_name || !bookingData.passenger_age || !bookingData.passenger_gender || !bookingData.bus_id || 
@@ -50,4 +63,4 @@ const validateBookingData = async (bookingData) => {
     return bookingCall;
 };
 
-module.exports = { validateBookingData , registrationPostService  };
+module.exports = { validateBookingData , registrationPostService ,loginPostService  };

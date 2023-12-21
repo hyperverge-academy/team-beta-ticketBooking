@@ -2,31 +2,35 @@ const { MongoClient } = require("mongodb");
 const dbconst = require("../constants/db.constants");
 const resConst = require("../constants/response.constants");
 
-let collection;
-async function connectDb() {
-  const client = new MongoClient(dbconst.url);
-  await client.connect();
+let collection ;
+const client = new MongoClient(dbconst.url);
+client.connect().then(()=>{
   console.log("Connected successfully to database");
   const db = client.db(dbconst.dbName);
   collection = db.collection(dbconst.userCollection);
-}
+})
+.catch(err => console.log(err));
 
-const registerPostResponse = async function (data) {
+
+
+
+const registerResponseDB = async function (data) {
   try {
     const convertRegisterData = {
       mobileNumber : parseInt(data.mobileNumber),
       password : data.password
     }
-    const info = collection.find({});
-    const documents = await info.toArray();
+    const info = collection.find({ "mobileNumber" : parseInt(data.mobileNumber) });
+    const documents = await info.toArray();    
     let registerData = [];
     for (let doc of documents) {
        registerData.push(doc.mobileNumber);
        registerData.push(doc.password);
     }
+    console.log(registerData);
     if (
        registerData.includes(data.password) &&
-       registerData.includes(data.mobileNumber)
+       registerData.includes(parseInt(data.mobileNumber))
     ) {
       return resConst.existDataMessage.message;
     } else {
@@ -38,6 +42,26 @@ const registerPostResponse = async function (data) {
     return error;
   }
 };
+
+const loginPost = async (userData) => {
+  try {
+    const {mobileNumber, password} = userData;
+    const info =  await collection.findOne({"mobileNumber" : parseInt(mobileNumber) , "password" : password});
+    console.log(info);
+    if (!info){
+      return resConst.loginUserNotfound;
+    }
+    if(info.password === password) {
+      return resConst.loginMessage
+    }
+    else {
+      return resConst.loginError
+    }
+  } catch (error) {
+    console.error(" login Error ", error);
+    return error
+  }
+}
 
 const saveBooking = async (bookingData) => {
   const client = new MongoClient(uri);
@@ -56,6 +80,6 @@ const saveBooking = async (bookingData) => {
     }
 }
 
-connectDb();
 
-module.exports = { saveBooking , registerPostResponse};
+
+module.exports = { saveBooking , registerResponseDB , loginPost};

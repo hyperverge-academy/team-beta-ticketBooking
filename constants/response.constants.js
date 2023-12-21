@@ -54,7 +54,24 @@ const resconst = {
         success : false,
         statusCode : 400,
         massage : "Mobile number shuold be 10 digit and password len should be 8 digit"
+    },
+    loginMessage :{
+        success : true,
+        statusCode : 201,
+        massage: "login successfull"
+    },
+    loginError :{
+        success : false,
+        statusCode : 401 ,
+        massage : "password and mobile number are invalid"
+    },
+    loginUserNotfound :{
+        success : false,
+        statusCode : 404 ,
+        massage : "user not found"
     }
+
+    
 }
 
 module.exports = resconst ;
