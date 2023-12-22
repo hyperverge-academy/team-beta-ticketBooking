@@ -11,29 +11,19 @@ client.connect().then(()=>{
 })
 .catch(err => console.log(err));
 
-
-
-
-const registerResponseDB = async function (data) {
+const saveUserInDB = async function (data) {
   try {
     const convertRegisterData = {
       mobileNumber : parseInt(data.mobileNumber),
       password : data.password
     }
     const info = collection.find({ "mobileNumber" : parseInt(data.mobileNumber) });
-    const documents = await info.toArray();    
-    let registerData = [];
-    for (let doc of documents) {
-       registerData.push(doc.mobileNumber);
-       registerData.push(doc.password);
+    const documents = await info.toArray();  
+
+    if(documents.length == 1){
+      return resConst.existDataMessage.message
     }
-    console.log(registerData);
-    if (
-       registerData.includes(data.password) &&
-       registerData.includes(parseInt(data.mobileNumber))
-    ) {
-      return resConst.existDataMessage.message;
-    } else {
+    else {
       const result = await collection.insertOne(convertRegisterData);
       return resConst.registerMessage.massage;
     }
@@ -46,8 +36,7 @@ const registerResponseDB = async function (data) {
 const loginPost = async (userData) => {
   try {
     const {mobileNumber, password} = userData;
-    const info =  await collection.findOne({"mobileNumber" : parseInt(mobileNumber) , "password" : password});
-    console.log(info);
+    const info =  await collection.findOne({"mobileNumber" : parseInt(mobileNumber)});
     if (!info){
       return resConst.loginUserNotfound;
     }
@@ -62,7 +51,6 @@ const loginPost = async (userData) => {
     return error
   }
 }
-
 const saveBooking = async (bookingData) => {
   const client = new MongoClient(uri);
     try {
@@ -80,6 +68,4 @@ const saveBooking = async (bookingData) => {
     }
 }
 
-
-
-module.exports = { saveBooking , registerResponseDB , loginPost};
+module.exports = { saveBooking , saveUserInDB , loginPost};

@@ -1,4 +1,3 @@
-
 const userService = require('../services/users.services');
 
 const registrationPost = async function(req , res ){
@@ -6,17 +5,10 @@ const registrationPost = async function(req , res ){
     res.send(await userService.registrationPostService(data))
     
 }
-
-
-
 const loginController = async function (req , res){
     const loginData = req.body 
     res.send(await userService.loginPostService(loginData));
 }
-
-
-
-
 const bookTicket = async(req, res) => {
     const { passenger_name , passenger_age ,passenger_gender ,
             bus_id , arrival_dateTime , departure_dateTime ,from , to ,bus_name 
@@ -26,4 +18,3 @@ const bookTicket = async(req, res) => {
 };
 
 module.exports = { bookTicket ,registrationPost , loginController};
-

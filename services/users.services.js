@@ -2,7 +2,6 @@
 const  userModel  = require('../models/users.model');
 const resconst = require('../constants/response.constants');
 
-
 const registrationPostService = async function (data) {
     if (!data.mobileNumber || !data.password){
         return resconst.fieldMissingError;
@@ -10,11 +9,9 @@ const registrationPostService = async function (data) {
     if (data.mobileNumber.length !== 10 && data.password.length !== 8 ) {
         return resconst.mobileAndPasswordError;
     }
-    return await userModel.registerResponseDB(data);
+    return await userModel.saveUserInDB(data);
 
 };
-
-
 
 const loginPostService = async function (userData){
     if (!userData.mobileNumber || !userData.password){

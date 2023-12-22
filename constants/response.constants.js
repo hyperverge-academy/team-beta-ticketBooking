@@ -71,7 +71,6 @@ const resconst = {
         massage : "user not found"
     }
 
-    
 }
 
 module.exports = resconst ;
