@@ -69,10 +69,4 @@ const validateBookingData = async (bookingData) => {
     return bookingCall;
 };
 
-const getUserBookings = async (userId) => {
-   
-    const booking = await bookingModel.getAllBookings(userId)
-    return booking
-}
-
-module.exports = { getUserBookings , validateBookingData }
+module.exports = { validateBookingData };
