@@ -43,7 +43,7 @@ const resconst = {
     registerMessage :{
         success : true,
         statusCode : 201,
-        massage: "Registration successfull"
+        message: "Registration successfull"
     },
     saveBookingMessage : {
         success : true,
@@ -53,24 +53,33 @@ const resconst = {
     mobileAndPasswordError : {
         success : false,
         statusCode : 400,
-        massage : "Mobile number shuold be 10 digit and password len should be 8 digit"
+        message : "Mobile number shuold be 10 digit and password len should be 8 digit"
     },
     loginMessage :{
         success : true,
         statusCode : 201,
-        massage: "login successfull"
+        message: "login successfull"
     },
     loginError :{
         success : false,
         statusCode : 401 ,
-        massage : "password and mobile number are invalid"
+        message : "password and mobile number are invalid"
     },
     loginUserNotfound :{
         success : false,
-        statusCode : 404 ,
-        massage : "user not found"
+        statusCode : 204 ,
+        message : "user not found"
+    },
+    internalServerError: {
+        status: "false",
+        statusCode:500,
+        message: "Interval server error. We are looking into this."
+    },
+    loginDataExist :{
+        success : true,
+        statusCode : 400 ,
+        message : "you have already logged in"
     }
-
 }
 
 module.exports = resconst ;

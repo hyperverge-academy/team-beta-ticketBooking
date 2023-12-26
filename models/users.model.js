@@ -20,16 +20,16 @@ const saveUserInDB = async function (data) {
     const info = collection.find({ "mobileNumber" : parseInt(data.mobileNumber) });
     const documents = await info.toArray();  
 
-    if(documents.length == 1){
-      return resConst.existDataMessage.message
+    if(documents.length >= 1){
+      return resConst.loginDataExist;
     }
     else {
       const result = await collection.insertOne(convertRegisterData);
-      return resConst.registerMessage.massage;
+      return resConst.registerMessage;
     }
   } catch (error) {
     console.error("Error inserting document:", error);
-    return error;
+    return resConst.internalServerError;
   }
 };
 
@@ -48,7 +48,7 @@ const loginPost = async (userData) => {
     }
   } catch (error) {
     console.error(" login Error ", error);
-    return error
+    return resConst.internalServerError
   }
 }
 const saveBooking = async (bookingData) => {
@@ -58,7 +58,7 @@ const saveBooking = async (bookingData) => {
         const bookings = database.collection(dbconst.bookingCollection);
         console.log('Booking saved:', bookingData);
         const result = await bookings.insertOne(bookingData);
-        return resConst.saveBookingMessage.message;
+        return resConst.saveBookingMessage;
 
     } catch (error) {
         console.error('Error saving booking:', error);
@@ -67,5 +67,4 @@ const saveBooking = async (bookingData) => {
       await client.close()
     }
 }
-
 module.exports = { saveBooking , saveUserInDB , loginPost};

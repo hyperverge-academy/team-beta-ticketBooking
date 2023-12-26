@@ -1,4 +1,3 @@
-
 const  userModel  = require('../models/users.model');
 const resconst = require('../constants/response.constants');
 
@@ -10,7 +9,6 @@ const registrationPostService = async function (data) {
         return resconst.mobileAndPasswordError;
     }
     return await userModel.saveUserInDB(data);
-
 };
 
 const loginPostService = async function (userData){
