@@ -3,7 +3,7 @@ const dbconst = require("../constants/db.constants");
 const resConst = require("../constants/response.constants");
 
 let collection ;
-const client = new MongoClient(dbconst.url);
+const client = new MongoClient(dbconst.uri);
 client.connect().then(()=>{
   console.log("Connected successfully to database");
   const db = client.db(dbconst.dbName);
@@ -67,4 +67,31 @@ const saveBooking = async (bookingData) => {
       await client.close()
     }
 }
-module.exports = { saveBooking , saveUserInDB , loginPost};
+
+const getAllBookings = async (userId) => {
+    const client = new MongoClient(dbconst.uri);
+    try {
+        const database = client.db(dbconst.dbName);
+        const bookingsCollection = database.collection(dbconst.bookingCollection);
+        const query = {userId:userId}
+
+        const allBookings = await bookingsCollection.find(query);
+        if ((await bookingsCollection.countDocuments(query))===0){
+          return resConst.documentMissing
+        }
+        const bookingsArray = []
+        for await(const doc of allBookings){
+          bookingsArray.push(doc)        
+        }
+        return bookingsArray;        
+    }
+    catch (error) {
+        console.error('Error retrieving bookings:', error);
+        return resConst.internalServerError
+    } 
+    finally {
+        await client.close();
+    }
+};
+
+module.exports = { getAllBookings , saveBooking, saveUserInDB , loginPost};

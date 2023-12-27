@@ -1,7 +1,9 @@
-const dbconst = {
-    dbName : "busBookings",
+
+const dbConst = {
+    dbName:"busBookings",
+    bookingCollection:"bookings",
     userCollection : "users",
-    url : "mongodb://localhost:27017",
-    bookingCollection : "bookings",
+    uri:"mongodb://localhost:27017",
 }
-module.exports = dbconst ;
+
+module.exports = dbConst;

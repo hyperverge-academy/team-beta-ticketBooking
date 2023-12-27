@@ -1,85 +1,97 @@
 const resconst = {
-    fieldMissingError : {
+    fieldMissingError: {
         success: false,
-        error_code: 'PSE: 1001',
+        errorCode: 'PSE: 1001',
         message: 'Some required fields are missing'
     },
-    passengerAgeError :{
-            success: false,
-            error_code: 'IA:2001',
-            message: 'Invalid passenger age. Please provide a valid positive integer age between 1 and 90'
- 
-    },
-    passengerGenderError :  {
+    passengerAgeError: {
         success: false,
-        error_code: 'GE:3001',
+        errorCode: 'IA:2001',
+        message: 'Invalid passenger age. Please provide a valid positive integer age between 1 and 90'
+
+    },
+    passengerGenderError: {
+        success: false,
+        errorCode: 'GE:3001',
         message: 'Please Select One Option'
     },
-    seatNumberError : {
+    seatNumberError: {
         success: false,
-        error_code: 'SN:4001',
+        errorCode: 'SN:4001',
         message: 'Please Book Atleast One Seat'
     },
-    busArrivalDataTimeError : {
+    busArrivalDataTimeError: {
         success: false,
-        error_code: 'BA:5001',
+        errorCode: 'BA:5001',
         message: 'Invalid arrival datetime format'
     },
-    busDepartureDateTimeError : {
+    busDepartureDateTimeError: {
         success: false,
-        error_code: 'DDT:6001',
+        errorCode: 'DDT:6001',
         message: 'Invalid departure datetime format',
     },
-    busTicketPriceError : {
+    busTicketPriceError: {
         success: false,
-        error_code: 'BTP:7001',
+        errorCode: 'BTP:7001',
         message: 'Invalid price. Please provide a valid price less than or equal to 10000.',
     },
-    existDataMessage : {
-        success : true,
-        statusCode : 200,
-        message : "This data is already exists"
+    existDataMessage: {
+        success: true,
+        errorCode: 200,
+        message: "This data is already exists"
     },
-    registerMessage :{
-        success : true,
-        statusCode : 201,
+    registerMessage: {
+        success: true,
+        errorCode: 201,
         message: "Registration successfull"
     },
-    saveBookingMessage : {
-        success : true,
-        statusCode : 201,
-        message:'Group Beta Suceessfully Booked Ticket'
+    saveBookingMessage: {
+        success: true,
+        errorCode: 201,
+        message: 'Group Beta Suceessfully Booked Ticket'
     },
-    mobileAndPasswordError : {
-        success : false,
-        statusCode : 400,
-        message : "Mobile number shuold be 10 digit and password len should be 8 digit"
+    mobileAndPasswordError: {
+        success: false,
+        errorCode: 400,
+        message: "Mobile number shuold be 10 digit and password len should be 8 digit"
     },
-    loginMessage :{
-        success : true,
-        statusCode : 201,
+    loginMessage: {
+        success: true,
+        errorCode: 201,
         message: "login successfull"
     },
-    loginError :{
-        success : false,
-        statusCode : 401 ,
-        message : "password and mobile number are invalid"
+    loginError: {
+        success: false,
+        errorCode: 401,
+        message: "password and mobile number are invalid"
     },
-    loginUserNotfound :{
-        success : false,
-        statusCode : 204 ,
-        message : "user not found"
+    loginUserNotfound: {
+        success: false,
+        errorCode: 204,
+        message: "user not found"
     },
     internalServerError: {
-        status: "false",
-        statusCode:500,
+        success: "false",
+        errorCode: 500,
         message: "Interval server error. We are looking into this."
     },
-    loginDataExist :{
-        success : true,
-        statusCode : 400 ,
-        message : "you have already logged in"
+    loginDataExist: {
+        success: true,
+        errorCode: 400,
+        message: "you have already logged in"
+    },
+
+    internalServerError: {
+        success: false,
+        errorCode: 500,
+        message: "Internal Server Error. we are looking into this server"
+    },
+
+    documentMissing:{
+        success: false,
+        errorCode: 204,
+        message: "No bookings found for the specified user"
     }
 }
 
-module.exports = resconst ;
+module.exports = resconst;
