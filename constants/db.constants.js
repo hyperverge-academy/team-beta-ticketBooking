@@ -1,6 +1,8 @@
+
 const dbConst = {
     dbName:"busBookings",
-    busCollection:"bookings",
+    bookingCollection:"bookings",
+    userCollection : "users",
     uri:"mongodb://localhost:27017",
 }
 
