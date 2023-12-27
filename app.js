@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const routes = require('./routes/health.route')
 const userRoutes = require('./routes/users.route.js');
 

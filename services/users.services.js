@@ -1,72 +1,67 @@
-const bookingModel = require('../models/users.model');
+const  userModel  = require('../models/users.model');
+const resconst = require('../constants/response.constants');
+
+const registrationPostService = async function (data) {
+    if (!data.mobileNumber || !data.password){
+        return resconst.fieldMissingError;
+    }
+    if (data.mobileNumber.length !== 10 && data.password.length !== 8 ) {
+        return resconst.mobileAndPasswordError;
+    }
+    return await userModel.saveUserInDB(data);
+};
+
+const loginPostService = async function (userData){
+    if (!userData.mobileNumber || !userData.password){
+        return resconst.fieldMissingError;
+    }
+    if (userData.mobileNumber.length !== 10 && userData.password.lengh !== 8  ){
+        return resconst.mobileAndPasswordError;
+    }
+    return await userModel.loginPost(userData);
+}
 
 const validateBookingData = async (bookingData) => {
     if (!bookingData.passenger_name || !bookingData.passenger_age || !bookingData.passenger_gender || !bookingData.bus_id || 
         !bookingData.arrival_dateTime || !bookingData.departure_dateTime || !bookingData.from || !bookingData.to || 
         !bookingData.bus_name || !bookingData.price || 
-        !bookingData.seat_number) {
-        const validationError = {
-            success: false,
-            error_code: 'PSE: 1001',
-            message: 'Some required fields are missing'
-        };
-        return validationError;
+        !bookingData.seat_number) {      
+        return resconst.fieldMissingError;
     }
 
     if (bookingData.passenger_age <= 0 || bookingData.passenger_age >= 90
         ) {
-        const validationError = {
-            success: false,
-            error_code: 'PSE: 1001',
-            message: 'Invalid passenger age. Please provide a valid positive integer age between 1 and 90'
-        };
-        return validationError;
+        return resconst.passengerAgeError;
     }
 
     if (!bookingData.passenger_gender == "Female" || !bookingData.passenger_gender == "Male" || !bookingData.passenger_gender == "Others") {
-        const validationError = {
-            success: false,
-            error_code: 'PSE: 1001',
-            message: 'Please Select One Option'
-        };
-        return validationError;
+        return resconst.passengerGenderError;
     }
 
     if (bookingData.seat_number <= 0) {
-        const validationError = {
-            success: false,
-            error_code: 'PSE: 1001',
-            message: 'Please Book Atleast One Seat'
-        };
-        return validationError;
+        return resconst.seatNumberError;
     }
 
     if ((bookingData.arrival_dataTime)) {
-        return {
-            success: false,
-            error_code: 'PSE: 1010',
-            message: 'Invalid arrival datetime format',
-        };
+        return resconst.busArrivalDataTimeError;
     }
 
     if (new Date (bookingData.departure_dateTime) < new Date()) {
-        return {
-            success: false,
-            error_code: 'PSE: 1011',
-            message: 'Invalid departure datetime format',
-        };
+        return resconst.busDepartureDateTimeError;
     }
 
     if (!bookingData.price || bookingData.price > 10000) {
-        return {
-            success: false,
-            error_code: 'PSE: 1009',
-            message: 'Invalid price. Please provide a valid price less than or equal to 10000.',
-        };
+        return resconst.busTicketPriceError;
     }
 
-    const bookingCall = await bookingModel.saveBooking(bookingData);
+    const bookingCall = await userModel.saveBooking(bookingData);
     return bookingCall;
 };
 
-module.exports = { validateBookingData };
+const getUserBookings = async (userId) => {
+   
+    const booking = await userModel.getAllBookings(userId)
+    return booking
+}
+
+module.exports = { getUserBookings, validateBookingData , registrationPostService ,loginPostService  };
