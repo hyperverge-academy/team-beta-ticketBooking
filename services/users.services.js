@@ -60,7 +60,7 @@ const validateBookingData = async (bookingData) => {
 
 const getUserBookings = async (userId) => {
    
-    const booking = await bookingModel.getAllBookings(userId)
+    const booking = await userModel.getAllBookings(userId)
     return booking
 }
 

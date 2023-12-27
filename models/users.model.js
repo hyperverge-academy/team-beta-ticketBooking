@@ -2,7 +2,6 @@ const { MongoClient } = require("mongodb");
 const dbconst = require("../constants/db.constants");
 const resConst = require("../constants/response.constants");
 
-// TODO:: Make a function and call from method
 let collection ;
 const client = new MongoClient(dbconst.uri);
 client.connect().then(()=>{
@@ -78,7 +77,7 @@ const getAllBookings = async (userId) => {
 
         const allBookings = await bookingsCollection.find(query);
         if ((await bookingsCollection.countDocuments(query))===0){
-          return { message: 'No bookings found for the specified user.' };
+          return resConst.documentMissing
         }
         const bookingsArray = []
         for await(const doc of allBookings){
@@ -96,4 +95,3 @@ const getAllBookings = async (userId) => {
 };
 
 module.exports = { getAllBookings , saveBooking, saveUserInDB , loginPost};
-

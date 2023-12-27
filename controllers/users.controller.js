@@ -16,7 +16,7 @@ const bookTicket = async(req, res) => {
 
 const getBookings =  async (req, res) => {
         const userId = req.params.id;
-        const userBookings = await bookingService.getUserBookings(userId);
+        const userBookings = await userService.getUserBookings(userId);
         res.send(userBookings)
 };
 
