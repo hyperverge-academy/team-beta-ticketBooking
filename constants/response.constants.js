@@ -1,4 +1,4 @@
-const resconst = {
+const constResponse = {
     fieldMissingError: {
         success: false,
         errorCode: 'PSE: 1001',
@@ -92,6 +92,31 @@ const resconst = {
         errorCode: 204,
         message: "No bookings found for the specified user"
     }
+  
+  missingFieldsErrorResponse: {
+        status: false,
+        statusCode: 400,
+        data: { message: "please enter all details" }
+    },
+
+    invalidSeatsErrorResponse: {
+        status: false,
+        statusCode: 400,
+        data: { message: "Total seats must be a positive number." }
+    },
+
+    invalidDaysErrorResponse: {
+        status: false,
+        statusCode: 400,
+        data: { message: "Invalid days. Please provide valid days." }
+    },
+
+    invalidDaysArrayErrorResponse: {
+        status: false,
+        statusCode: 400,
+        data: { message: "Invalid days. Please provide an array of valid days." }
+    }
 }
 
-module.exports = resconst;
+module.exports= constResponse;
+
