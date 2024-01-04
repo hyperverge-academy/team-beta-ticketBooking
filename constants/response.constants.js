@@ -91,7 +91,7 @@ const constResponse = {
         success: false,
         errorCode: 204,
         message: "No bookings found for the specified user"
-    }
+    },
   
   missingFieldsErrorResponse: {
         status: false,

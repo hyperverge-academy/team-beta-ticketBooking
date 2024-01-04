@@ -10,7 +10,7 @@ async function insertBusDetails(allBusDetails) {
         const inserData= await collection.insertOne(allBusDetails)
 
         const responsMessage= {
-            message:"Your data has successfully been inserted into the database"
+            message:"Your bus is created successfully"
         }
         return responsMessage
 
