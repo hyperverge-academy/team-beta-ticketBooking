@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/users/:userId/bookings', userController.bookTicket);
 router.get('/users/:id/bookings', userController.getBookings);
-router.post('/users/registration',userController.registrationPost);
-router.post('/users/login',userController.loginController);
+router.post('/users/registration',userController.registerUser);
+router.post('/users/login',userController.loginUser);
 
 module.exports = router;

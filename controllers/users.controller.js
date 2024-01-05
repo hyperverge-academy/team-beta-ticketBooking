@@ -1,13 +1,13 @@
 const userService = require('../services/users.services');
 
-const registrationPost = async function(req , res ){
-    const data = req.body
-    res.send(await userService.registrationPostService(data))
+const registerUser = async function(req , res){
+    const registrationData = req.body
+    res.send(await userService.registerUserService(registrationData))
     
 }
-const loginController = async function (req , res){
+const loginUser = async function (req , res){
     const loginData = req.body 
-    res.send(await userService.loginPostService(loginData));
+    res.send(await userService.loginUserService(loginData));
 }
 const bookTicket = async(req, res) => {
     const output = await bookingService.validateBookingData(req.body)
@@ -20,4 +20,4 @@ const getBookings =  async (req, res) => {
         res.send(userBookings)
 };
 
-module.exports = { getBookings , bookTicket, registrationPost , loginController};
+module.exports = { getBookings , bookTicket, registerUser , loginUser};

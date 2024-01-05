@@ -11,13 +11,14 @@ client.connect().then(()=>{
 })
 .catch(err => console.log(err));
 
-const saveUserInDB = async function (data) {
+const saveUserToDatabase = async function (userData) {
   try {
     const convertRegisterData = {
-      mobileNumber : parseInt(data.mobileNumber),
-      password : data.password
+      fullName: userData.fullName,
+      mobileNumber : parseInt(userData.mobileNumber),
+      password : userData.password
     }
-    const info = collection.find({ "mobileNumber" : parseInt(data.mobileNumber) });
+    const info = collection.find({ "mobileNumber" : parseInt(userData.mobileNumber) });
     const documents = await info.toArray();  
 
     if(documents.length >= 1){
@@ -33,9 +34,9 @@ const saveUserInDB = async function (data) {
   }
 };
 
-const loginPost = async (userData) => {
+const loginToDatabase = async (loginData) => {
   try {
-    const {mobileNumber, password} = userData;
+    const {mobileNumber, password} = loginData;
     const info =  await collection.findOne({"mobileNumber" : parseInt(mobileNumber)});
     if (!info){
       return resConst.loginUserNotfound;
@@ -94,4 +95,4 @@ const getAllBookings = async (userId) => {
     }
 };
 
-module.exports = { getAllBookings , saveBooking, saveUserInDB , loginPost};
+module.exports = { getAllBookings , saveBooking, saveUserToDatabase , loginToDatabase};
