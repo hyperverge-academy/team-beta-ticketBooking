@@ -2,10 +2,10 @@ const  userModel  = require('../models/users.model');
 const resconst = require('../constants/response.constants');
 
 const registerUserService = async function (registerData) {
-    if (!registerData.fullName || !registerData.mobileNumber || !registerData.password){
+    if (!registerData.fullName || !registerData.mobileNumber || !registerData.password || !registerData.confirmPassword){
         return resconst.fieldMissingError;
     }
-    if (registerData.mobileNumber.length !== 10 && registerData.password.length !== 8) {
+    if (registerData.mobileNumber.length !== 10 && registerData.password.length !== 8 && registerData.confirmPassword.lengh !== 8) {
         return resconst.mobileAndPasswordError;
     }
     return await userModel.saveUserToDatabase(registerData);

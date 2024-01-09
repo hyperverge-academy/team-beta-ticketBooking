@@ -16,14 +16,19 @@ const saveUserToDatabase = async function (userData) {
     const convertRegisterData = {
       fullName: userData.fullName,
       mobileNumber : parseInt(userData.mobileNumber),
-      password : userData.password
+      password : userData.password,
+      confirmPassword : userData.confirmPassword
     }
     const info = collection.find({ "mobileNumber" : parseInt(userData.mobileNumber) });
     const documents = await info.toArray();  
 
     if(documents.length >= 1){
-      return resConst.loginDataExist;
+      return resConst.registerError;
     }
+
+    if (userData.password !== userData.confirmPassword) {
+      return resConst.passwordNotMatch;
+    } 
     else {
       const result = await collection.insertOne(convertRegisterData);
       return resConst.registerMessage;
@@ -38,6 +43,9 @@ const loginToDatabase = async (loginData) => {
   try {
     const {mobileNumber, password} = loginData;
     const info =  await collection.findOne({"mobileNumber" : parseInt(mobileNumber)});
+    if (info) {
+      return resConst.loginDataExist;
+    }
     if (!info){
       return resConst.loginUserNotfound;
     }

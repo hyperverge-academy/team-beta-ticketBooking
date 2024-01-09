@@ -45,6 +45,11 @@ const resconst = {
         errorCode: 201,
         message: "Registration successfull"
     },
+    registerError : {
+        success: false,
+        errorCode: 409, 
+        message: "User is already registered"
+    },
     saveBookingMessage: {
         success: true,
         errorCode: 201,
@@ -91,6 +96,11 @@ const resconst = {
         success: false,
         errorCode: 204,
         message: "No bookings found for the specified user"
+    },
+    passwordNotMatch :{
+        suceess:false,
+        message:'Passwords do not match',
+        errorCode: 400
     }
 }
 
