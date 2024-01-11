@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb");
 const dbconst = require("../constants/db.constants");
 const resConst = require("../constants/response.constants");
+const tokenmodel = require('./token.model')
 
 let collection ;
 const client = new MongoClient(dbconst.uri);
@@ -17,9 +18,12 @@ const saveUserToDatabase = async function (userData) {
       fullName: userData.fullName,
       mobileNumber : parseInt(userData.mobileNumber),
       password : userData.password,
-      confirmPassword : userData.confirmPassword
+      confirmPassword : userData.confirmPassword,
+      role:"user"
     }
-    const info = collection.find({ "mobileNumber" : parseInt(userData.mobileNumber) });
+    console.log(convertRegisterData);
+
+    const info = await collection.find({ "mobileNumber" : parseInt(userData.mobileNumber) });
     const documents = await info.toArray();  
 
     if(documents.length >= 1){
@@ -43,18 +47,21 @@ const loginToDatabase = async (loginData) => {
   try {
     const {mobileNumber, password} = loginData;
     const info =  await collection.findOne({"mobileNumber" : parseInt(mobileNumber)});
-    if (info) {
-      return resConst.loginDataExist;
-    }
     if (!info){
       return resConst.loginUserNotfound;
     }
     if(info.password === password) {
-      return resConst.loginMessage
+      const tokenData = {
+        mobileNumber : loginData.mobileNumber,
+        role: info.role
+      }
+      console.log(tokenData);
+      return tokenmodel.generateToken(tokenData)
     }
-    else {
+    else  {
       return resConst.loginError
     }
+    
   } catch (error) {
     console.error(" login Error ", error);
     return resConst.internalServerError

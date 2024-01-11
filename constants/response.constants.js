@@ -42,8 +42,8 @@ const resconst = {
     },
     registerMessage: {
         success: true,
-        errorCode: 201,
-        message: "Registration successfull"
+        errorCode: 200,
+        message: "Registration successful"
     },
     registerError : {
         success: false,
@@ -62,8 +62,8 @@ const resconst = {
     },
     loginMessage: {
         success: true,
-        errorCode: 201,
-        message: "login successfull"
+        errorCode: 200,
+        message: "login successful"
     },
     loginError: {
         success: false,
