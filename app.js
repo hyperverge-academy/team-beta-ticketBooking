@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const userModel = require('./models/users.model.js');
 
 const routes = require('./routes/health.route.js');
 const usersRoutes = require('./routes/users.route.js');
@@ -15,6 +16,12 @@ app.use(bodyParser.json());
 app.use(routes);
 app.use(usersRoutes);
 
-app.listen(port, () => {
+
+app.listen(port, async() => {
+  const registerADminSucceded = await userModel.registerAdmin();
+  if (!registerADminSucceded){
+    console.log("Account dont exist!")
+    app.close();
+  }
   console.log(`Server is listening on port ${port}`);
 });

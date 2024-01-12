@@ -1,7 +1,8 @@
 const { MongoClient } = require("mongodb");
 const dbconst = require("../constants/db.constants");
 const resConst = require("../constants/response.constants");
-const tokenmodel = require('./token.model')
+const tokenmodel = require('./token.model');
+const  serviceConst = require('../constants/service.constants');
 
 let collection ;
 const client = new MongoClient(dbconst.uri);
@@ -9,8 +10,30 @@ client.connect().then(()=>{
   console.log("Connected successfully to database");
   const db = client.db(dbconst.dbName);
   collection = db.collection(dbconst.userCollection);
+  console.log(collection)
 })
 .catch(err => console.log(err));
+
+const registerAdmin = async function(){
+  const client = new MongoClient(dbconst.uri);
+  try{
+    const db = client.db(dbconst.dbName);
+    const collection = db.collection(dbconst.userCollection)
+    console.log(serviceConst.adminData.mobileNumber,"1234");
+    console.log(collection);
+    const findAdminDetails = await collection.findOne({"mobileNumber": serviceConst.adminData.mobileNumber});
+    if (findAdminDetails){
+      return true
+    }else{
+      await collection.insertOne(serviceConst.adminData)
+      return true
+    }
+  }
+  catch(error){
+    console.log("error",error);
+    return false;
+  }
+}
 
 const saveUserToDatabase = async function (userData) {
   try {
@@ -110,4 +133,4 @@ const getAllBookings = async (userId) => {
     }
 };
 
-module.exports = { getAllBookings , saveBooking, saveUserToDatabase , loginToDatabase};
+module.exports = { getAllBookings , saveBooking, saveUserToDatabase , loginToDatabase,registerAdmin};
