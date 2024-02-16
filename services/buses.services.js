@@ -8,7 +8,7 @@ const validateInsertBusDetails = function (busData) {
         return constResponse.missingFieldsErrorResponse;
     }
 
-    if (isNaN(busData.total_seats) || busData.total_seats <= 0) {
+    if (isNaN(busData.total_seats) || busData.total_seats <= 45) {
 
         return constResponse.invalidSeatsErrorResponse;
     }
