@@ -1,6 +1,8 @@
 const { MongoClient } = require("mongodb");
 const dbconst = require("../constants/db.constants");
 const resConst = require("../constants/response.constants");
+const tokenmodel = require('./token.model');
+const  serviceConst = require('../constants/service.constants');
 
 let collection ;
 const client = new MongoClient(dbconst.uri);
@@ -8,21 +10,52 @@ client.connect().then(()=>{
   console.log("Connected successfully to database");
   const db = client.db(dbconst.dbName);
   collection = db.collection(dbconst.userCollection);
+  console.log(collection)
 })
 .catch(err => console.log(err));
 
-const saveUserInDB = async function (data) {
+const registerAdmin = async function(){
+  const client = new MongoClient(dbconst.uri);
+  try{
+    const db = client.db(dbconst.dbName);
+    const collection = db.collection(dbconst.userCollection)
+    console.log(serviceConst.adminData.mobileNumber,"1234");
+    console.log(collection);
+    const findAdminDetails = await collection.findOne({"mobileNumber": serviceConst.adminData.mobileNumber});
+    if (findAdminDetails){
+      return true
+    }else{
+      await collection.insertOne(serviceConst.adminData)
+      return true
+    }
+  }
+  catch(error){
+    console.log("error",error);
+    return false;
+  }
+}
+
+const saveUserToDatabase = async function (userData) {
   try {
     const convertRegisterData = {
-      mobileNumber : parseInt(data.mobileNumber),
-      password : data.password
+      fullName: userData.fullName,
+      mobileNumber : parseInt(userData.mobileNumber),
+      password : userData.password,
+      confirmPassword : userData.confirmPassword,
+      role:"user"
     }
-    const info = collection.find({ "mobileNumber" : parseInt(data.mobileNumber) });
+    console.log(convertRegisterData);
+
+    const info = await collection.find({ "mobileNumber" : parseInt(userData.mobileNumber) });
     const documents = await info.toArray();  
 
     if(documents.length >= 1){
-      return resConst.loginDataExist;
+      return resConst.registerError;
     }
+
+    if (userData.password !== userData.confirmPassword) {
+      return resConst.passwordNotMatch;
+    } 
     else {
       const result = await collection.insertOne(convertRegisterData);
       return resConst.registerMessage;
@@ -33,26 +66,32 @@ const saveUserInDB = async function (data) {
   }
 };
 
-const loginPost = async (userData) => {
+const loginToDatabase = async (loginData) => {
   try {
-    const {mobileNumber, password} = userData;
+    const {mobileNumber, password} = loginData;
     const info =  await collection.findOne({"mobileNumber" : parseInt(mobileNumber)});
     if (!info){
       return resConst.loginUserNotfound;
     }
     if(info.password === password) {
-      return resConst.loginMessage
+      const tokenData = {
+        mobileNumber : loginData.mobileNumber,
+        role: info.role
+      }
+      console.log(tokenData);
+      return tokenmodel.generateToken(tokenData)
     }
-    else {
+    else  {
       return resConst.loginError
     }
+    
   } catch (error) {
     console.error(" login Error ", error);
     return resConst.internalServerError
   }
 }
 const saveBooking = async (bookingData) => {
-  const client = new MongoClient(uri);
+  const client = new MongoClient(dbconst.uri);
     try {
         const database = client.db(dbconst.dbName);
         const bookings = database.collection(dbconst.bookingCollection);
@@ -94,4 +133,4 @@ const getAllBookings = async (userId) => {
     }
 };
 
-module.exports = { getAllBookings , saveBooking, saveUserInDB , loginPost};
+module.exports = { getAllBookings , saveBooking, saveUserToDatabase , loginToDatabase,registerAdmin};

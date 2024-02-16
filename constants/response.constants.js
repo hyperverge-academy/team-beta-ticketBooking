@@ -42,8 +42,13 @@ const constResponse = {
     },
     registerMessage: {
         success: true,
-        errorCode: 201,
-        message: "Registration successfull"
+        errorCode: 200,
+        message: "Registration successful"
+    },
+    registerError : {
+        success: false,
+        errorCode: 409, 
+        message: "User is already registered"
     },
     saveBookingMessage: {
         success: true,
@@ -57,8 +62,8 @@ const constResponse = {
     },
     loginMessage: {
         success: true,
-        errorCode: 201,
-        message: "login successfull"
+        errorCode: 200,
+        message: "login successful"
     },
     loginError: {
         success: false,
@@ -92,8 +97,21 @@ const constResponse = {
         errorCode: 204,
         message: "No bookings found for the specified user"
     },
+
+    passwordNotMatch :{
+        suceess:false,
+        message:'Passwords do not match',
+        errorCode: 400
+    },
+
+    unauthorizedMessage:{
+    success: false,
+    errorCode: 401,
+    message: "Unauthorized: Token not provided."
+    },
+
   
-  missingFieldsErrorResponse: {
+    missingFieldsErrorResponse: {
         status: false,
         statusCode: 400,
         data: { message: "please enter all details" }
@@ -116,6 +134,7 @@ const constResponse = {
         statusCode: 400,
         data: { message: "Invalid days. Please provide an array of valid days." }
     }
+
 }
 
 module.exports= constResponse;
