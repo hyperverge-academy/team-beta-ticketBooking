@@ -101,7 +101,14 @@ const resconst = {
         suceess:false,
         message:'Passwords do not match',
         errorCode: 400
+    },
+
+    unauthorizedMessage:{
+    success: false,
+    errorCode: 401,
+    message: "Unauthorized: Token not provided."
     }
+    
 }
 
 module.exports = resconst;

@@ -91,7 +91,7 @@ const loginToDatabase = async (loginData) => {
   }
 }
 const saveBooking = async (bookingData) => {
-  const client = new MongoClient(uri);
+  const client = new MongoClient(dbconst.uri);
     try {
         const database = client.db(dbconst.dbName);
         const bookings = database.collection(dbconst.bookingCollection);

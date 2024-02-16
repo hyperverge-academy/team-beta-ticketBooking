@@ -1,5 +1,6 @@
 const userService = require('../services/users.services');
 
+
 const registerUser = async function(req , res){
     const registrationData = req.body
     res.send(await userService.registerUserService(registrationData))
@@ -10,8 +11,8 @@ const loginUser = async function (req , res){
     res.send(await userService.loginUserService(loginData));
 }
 const bookTicket = async(req, res) => {
-    const output = await bookingService.validateBookingData(req.body)
-    res.json(output)
+    const output = await userService.validateBookingData(req.body)
+    res.send(output)
 };
 
 const getBookings =  async (req, res) => {

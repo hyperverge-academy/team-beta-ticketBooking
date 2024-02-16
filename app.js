@@ -4,6 +4,7 @@ const cors = require('cors');
 const userModel = require('./models/users.model.js');
 
 const routes = require('./routes/health.route.js');
+
 const usersRoutes = require('./routes/users.route.js');
 
 
