@@ -1,24 +1,24 @@
 const  userModel  = require('../models/users.model');
 const resconst = require('../constants/response.constants');
 
-const registrationPostService = async function (data) {
-    if (!data.mobileNumber || !data.password){
+const registerUserService = async function (registerData) {
+    if (!registerData.fullName || !registerData.mobileNumber || !registerData.password || !registerData.confirmPassword){
         return resconst.fieldMissingError;
     }
-    if (data.mobileNumber.length !== 10 && data.password.length !== 8 ) {
+    if (registerData.mobileNumber.length !== 10 && registerData.password.length !== 8 && registerData.confirmPassword.lengh !== 8) {
         return resconst.mobileAndPasswordError;
     }
-    return await userModel.saveUserInDB(data);
+    return await userModel.saveUserToDatabase(registerData);
 };
 
-const loginPostService = async function (userData){
-    if (!userData.mobileNumber || !userData.password){
+const loginUserService= async function (loginData){
+    if (!loginData.mobileNumber || !loginData.password){
         return resconst.fieldMissingError;
     }
-    if (userData.mobileNumber.length !== 10 && userData.password.lengh !== 8  ){
+    if (loginData.mobileNumber.length !== 10 && loginData.password.lengh !== 8){
         return resconst.mobileAndPasswordError;
     }
-    return await userModel.loginPost(userData);
+    return await userModel.loginToDatabase(loginData);
 }
 
 const validateBookingData = async (bookingData) => {
@@ -64,4 +64,4 @@ const getUserBookings = async (userId) => {
     return booking
 }
 
-module.exports = { getUserBookings, validateBookingData , registrationPostService ,loginPostService  };
+module.exports = { getUserBookings, validateBookingData , registerUserService , loginUserService};
