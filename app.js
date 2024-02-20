@@ -17,7 +17,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use(routes);
-app.use(userRoutes);
+app.use(usersRoutes);
 
 const busRoutes = require('./routes/buses.route')
 app.use(busRoutes)

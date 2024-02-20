@@ -6,4 +6,8 @@ const busDetails = async function (req, res) {
     res.send(sendData)
 }
 
-module.exports = { busDetails }
+async function handleFindAllBusesRequest (req, res) {
+    const allBusDetails = await busService.getAllBuses()
+    res.send(allBusDetails)
+}
+module.exports = { busDetails , handleFindAllBusesRequest}
