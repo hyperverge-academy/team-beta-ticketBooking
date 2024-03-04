@@ -8,8 +8,6 @@ const routes = require('./routes/health.route.js');
 
 const usersRoutes = require('./routes/users.route.js');
 
-
-
 const app = express();
 const port = 3000;
 
@@ -25,6 +23,7 @@ app.use(busRoutes)
 
 app.listen(port, async() => {
   const registerADminSucceded = await userModel.registerAdmin();
+  console.log(registerADminSucceded , "ss")
   if (!registerADminSucceded){
     console.log("Account dont exist!")
     app.close();
