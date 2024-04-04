@@ -27,4 +27,8 @@ const validateInsertBusDetails = function (busData) {
     return busModels.insertBusDetails(busData)
 }
 
-module.exports = { validateInsertBusDetails }
+async function getAllBuses() {
+    return busModels.fetchAllBusesFromDatabase();
+}
+
+module.exports = { validateInsertBusDetails , getAllBuses }

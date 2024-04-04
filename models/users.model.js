@@ -22,7 +22,9 @@ const registerAdmin = async function(){
     console.log(serviceConst.adminData.mobileNumber,"1234");
     console.log(collection);
     const findAdminDetails = await collection.findOne({"mobileNumber": serviceConst.adminData.mobileNumber});
+    console.log(findAdminDetails , "null")
     if (findAdminDetails){
+      console.log(findAdminDetails , "sayali")
       return true
     }else{
       await collection.insertOne(serviceConst.adminData)
@@ -69,7 +71,9 @@ const saveUserToDatabase = async function (userData) {
 const loginToDatabase = async (loginData) => {
   try {
     const {mobileNumber, password} = loginData;
+    console.log(mobileNumber,password)
     const info =  await collection.findOne({"mobileNumber" : parseInt(mobileNumber)});
+    console.log(info)
     if (!info){
       return resConst.loginUserNotfound;
     }
