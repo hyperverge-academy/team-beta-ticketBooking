@@ -1,9 +1,11 @@
 const express = require('express');
+const router = express.Router();
 const busesControllers = require('../controllers/buses.contoller')
 
-const router = express.Router();
+const tokensMiddleware = require('../middlewares/token.middleware')
+const busesMiddleware = require('../middlewares/bus.middleware');
 
-router.post('/buses',busesControllers.busDetails)
-router.get('/buses', busesControllers.handleFindAllBusesRequest)
+router.post('/:userId/buses' ,tokensMiddleware.verifyTokenRequest , busesMiddleware.busesValidationSchema , busesControllers.busDetails)
+// router.get('/:userId/busesAll', tokensMiddleware.verifyTokenRequest ,busesControllers.handleFindAllBusesRequest)
 
-module.exports= router
+module.exports = router;

@@ -1,34 +1,27 @@
-const { MongoClient } = require("mongodb");
 const dbconst = require("../constants/db.constants");
 const resConst = require("../constants/response.constants");
 const tokenmodel = require('./token.model');
-const  serviceConst = require('../constants/service.constants');
-
-let collection ;
-const client = new MongoClient(dbconst.uri);
-client.connect().then(()=>{
-  console.log("Connected successfully to database");
-  const db = client.db(dbconst.dbName);
-  collection = db.collection(dbconst.userCollection);
-  console.log(collection)
-})
-.catch(err => console.log(err));
+const dbConnections = require("./db.model");
 
 const registerAdmin = async function(){
-  const client = new MongoClient(dbconst.uri);
+  
   try{
-    const db = client.db(dbconst.dbName);
-    const collection = db.collection(dbconst.userCollection)
-    console.log(serviceConst.adminData.mobileNumber,"1234");
-    console.log(collection);
-    const findAdminDetails = await collection.findOne({"mobileNumber": serviceConst.adminData.mobileNumber});
+    const userCollection = process.env.USER_COLLECTION
+    const adminData = JSON.parse(process.env.ADMIN_DATA)
+
+    const dbConnection = await dbConnections()
+    const collection = dbConnection.collection(userCollection)
+  
+    const findAdminDetails = await collection.findOne({"mobileNumber": adminData.mobileNumber});
     console.log(findAdminDetails , "null")
+
     if (findAdminDetails){
       console.log(findAdminDetails , "sayali")
-      return true
-    }else{
-      await collection.insertOne(serviceConst.adminData)
-      return true
+      return true;
+    }
+    else{
+      await collection.insertOne(adminData)
+      return true;
     }
   }
   catch(error){
@@ -37,8 +30,33 @@ const registerAdmin = async function(){
   }
 }
 
+const saveBooking = async (bookingData) => {
+    try {
+        const bookingsCollection = process.env.BOOKING_COLLECTION
+        const dbConnection = await dbConnections()
+        const bookings = dbConnection.collection(bookingsCollection);
+        console.log('Booking saved:', bookingData);
+
+        const result = await bookings.insertOne(bookingData);
+        console.log(`Document inserted ${result.insertedId}`);
+
+        return resConst.saveBookingMessage;
+
+    } catch (error) {
+        console.error('Error saving booking:', error);
+    }
+    finally {
+      
+    }
+}
+
 const saveUserToDatabase = async function (userData) {
   try {
+
+    const usersCollection = process.env.USER_COLLECTION
+    const dbConnection = await dbConnections()
+
+
     const convertRegisterData = {
       fullName: userData.fullName,
       mobileNumber : parseInt(userData.mobileNumber),
@@ -48,6 +66,7 @@ const saveUserToDatabase = async function (userData) {
     }
     console.log(convertRegisterData);
 
+    const collection = dbConnection.collection(usersCollection)
     const info = await collection.find({ "mobileNumber" : parseInt(userData.mobileNumber) });
     const documents = await info.toArray();  
 
@@ -70,10 +89,18 @@ const saveUserToDatabase = async function (userData) {
 
 const loginToDatabase = async (loginData) => {
   try {
+
+    const userCollection = process.env.USER_COLLECTION
+
+    const dbConnection = await dbConnections()
+    const collection = dbConnection.collection(userCollection)
+    
     const {mobileNumber, password} = loginData;
     console.log(mobileNumber,password)
+
     const info =  await collection.findOne({"mobileNumber" : parseInt(mobileNumber)});
     console.log(info)
+
     if (!info){
       return resConst.loginUserNotfound;
     }
@@ -94,47 +121,36 @@ const loginToDatabase = async (loginData) => {
     return resConst.internalServerError
   }
 }
-const saveBooking = async (bookingData) => {
-  const client = new MongoClient(dbconst.uri);
-    try {
-        const database = client.db(dbconst.dbName);
-        const bookings = database.collection(dbconst.bookingCollection);
-        console.log('Booking saved:', bookingData);
-        const result = await bookings.insertOne(bookingData);
-        return resConst.saveBookingMessage;
 
-    } catch (error) {
-        console.error('Error saving booking:', error);
-    }
-    finally {
-      await client.close()
-    }
-}
+// const getAllBookings = async (userId) => {
 
-const getAllBookings = async (userId) => {
-    const client = new MongoClient(dbconst.uri);
-    try {
-        const database = client.db(dbconst.dbName);
-        const bookingsCollection = database.collection(dbconst.bookingCollection);
-        const query = {userId:userId}
+//     try {
+        
+//         const bookingsCollection = process.env.BOOKING_COLLECTION
+//         const dbConnection = await dbConnections()
+//         const collection = dbConnection.collection(bookingsCollection)
+        
+//         const query = {userId:userId}
 
-        const allBookings = await bookingsCollection.find(query);
-        if ((await bookingsCollection.countDocuments(query))===0){
-          return resConst.documentMissing
-        }
-        const bookingsArray = []
-        for await(const doc of allBookings){
-          bookingsArray.push(doc)        
-        }
-        return bookingsArray;        
-    }
-    catch (error) {
-        console.error('Error retrieving bookings:', error);
-        return resConst.internalServerError
-    } 
-    finally {
-        await client.close();
-    }
-};
+//         const allBookings = collection.find(query);
 
-module.exports = { getAllBookings , saveBooking, saveUserToDatabase , loginToDatabase,registerAdmin};
+//         if ((await collection.countDocuments(query))===0){
+//           return resConst.documentMissing
+//         }
+//         const bookingsArray = []
+//         for await(const doc of allBookings){
+//           bookingsArray.push(doc)        
+//         }
+//         console.log(bookingsArray)
+//         return bookingsArray;        
+//     }
+//     catch (error) {
+//         console.error('Error retrieving bookings:', error);
+//         return resConst.internalServerError
+//     } 
+//     finally {
+        
+//     }
+// };
+
+module.exports = { saveBooking, saveUserToDatabase , loginToDatabase,registerAdmin};

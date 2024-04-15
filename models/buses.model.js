@@ -1,55 +1,50 @@
-let { MongoClient } = require('mongodb');
-const dbConstans = require('../constants/db.constants');
 const dbResponse = require('../constants/response.constants')
+const databaseConnection = require('./db.model');
 
 async function insertBusDetails(allBusDetails) {
-    const client = new MongoClient(dbConstans.uri);
+
     try {
-        const database=client.db(dbConstans.dbName);
-        const collection =database.collection(dbConstans.collectionsName)
+        const busesCollection = process.env.BUS_COLLECTION 
+        const dbConnection = await databaseConnection()
+        const collection = dbConnection.collection(busesCollection)
 
         const inserData= await collection.insertOne(allBusDetails)
-
-        const responsMessage= {
-            message:"Your data has successfully been inserted into the database"
-        }
-        return responsMessage
+        console.log(inserData)
+        return dbResponse.busDetailsSuccessResponse;
 
     } finally {
-        await client.close();
+        
     }
 }
 
-const dbConstants = require('../constants/db.constants');
-const resConstants = require('../constants/response.constants');
-
 async function fetchAllBusesFromDatabase() {
-    const client = new MongoClient(dbConstants.uri);
 
     try {
-        const database = client.db(dbConstants.dbName);
-        const busCollection = database.collection(dbConstants.collectionsName);
-        const query = {};
-        const busDetails = await busCollection.find(query).toArray();
-        console.log('Query Result:', busDetails);
+        const busCollection = process.env.BUS_COLLECTION
+        const dbConnection = await databaseConnection()
+        const collection = dbConnection.collection(busCollection)
 
-        if (busDetails.length === 0) {
+        const query = {};
+        const busDetails = collection.find(query);
+        // console.log('Query Result:', busDetails);
+
+        if (await collection.countDocuments(query) === 0) {
             console.log('No bookings found for the specified user.'); 
             return resConstants.missingDocument;
         }
 
         const busesArray = [];
-        for (const doc of busDetails) {
+        for await(const doc of busDetails) {
             busesArray.push(doc);
         }
-
+        console.log(busesArray)
         return busesArray;
 
     } catch (error) {
         console.error("Error fetching bus details: ", error);
-        return 'Internal server error.';
+        return dbResponse.internalServerError
     } finally {
-        await client.close();
+        // await client.close();
     }
 }
 
