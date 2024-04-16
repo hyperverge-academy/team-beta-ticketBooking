@@ -114,25 +114,37 @@ const constResponse = {
     missingFieldsErrorResponse: {
         status: false,
         statusCode: 400,
-        data: { message: "please enter all details" }
+        message: "please enter all details" 
     },
 
     invalidSeatsErrorResponse: {
         status: false,
         statusCode: 400,
-        data: { message: "Total seats must be a positive number." }
+        message: "Total seats must be a positive number." 
     },
 
     invalidDaysErrorResponse: {
         status: false,
         statusCode: 400,
-        data: { message: "Invalid days. Please provide valid days." }
+        message: "Invalid days. Please provide valid days." 
     },
 
     invalidDaysArrayErrorResponse: {
         status: false,
         statusCode: 400,
-        data: { message: "Invalid days. Please provide an array of valid days." }
+        message: "Invalid days. Please provide an array of valid days." 
+    },
+
+    busDetailsErrorResponse : {
+        status: false,
+        statusCode: 400,
+        message: "Error inserting bus details. Please check your input." 
+    },
+
+    busDetailsSuccessResponse : {
+        status: true,
+        statusCode: 200,
+        message: "Bus details inserted successfully." 
     }
 
 }
