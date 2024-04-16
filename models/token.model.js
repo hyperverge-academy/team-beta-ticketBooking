@@ -2,7 +2,7 @@ const dbConst = require('../constants/db.constants');
 const response = require('../constants/response.constants');
 const jwt = require('jsonwebtoken');
 const { MongoClient } = require("mongodb");
-const databaseConnection = require('./db.model');
+const databaseConnection = require('../config/db.model');
 
 const generateToken = async (userData) => {
     try {

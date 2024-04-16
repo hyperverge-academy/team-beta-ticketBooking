@@ -1,8 +1,5 @@
 const Joi = require('joi');
 
-// const busModels = require('../models/buses.model');
-// const dbConst= require('../constants/response.constants');
-
 const busSchema = Joi.object({
     bus_name: Joi.string().required(),
     from: Joi.string().required(),

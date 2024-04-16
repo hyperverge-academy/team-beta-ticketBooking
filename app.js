@@ -5,7 +5,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const userModel = require('./models/users.model.js');
+const userLayer = require('./dbLayers/user.layers.js');
 
 const routes = require('./routes/health.route.js');
 
@@ -16,7 +16,7 @@ const busRoutes = require('./routes/buses.route')
 const app = express();
 const port = process.env.PORT || 3000
 
-const dbConnection = require('./models/db.model.js')
+const dbConnection = require('./config/db.model.js')
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -29,7 +29,7 @@ async function server() {
   try {
     await dbConnection();
     const serverApp = app.listen(port, async () => {
-      const registerADminSucceded = await userModel.registerAdmin();
+      const registerADminSucceded = await userLayer.registerAdmin();
       if (!registerADminSucceded) {
         console.log("Account doesn't exist!");
         serverApp.close(() => {

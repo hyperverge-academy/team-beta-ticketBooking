@@ -12,4 +12,3 @@ async function handleFindAllBusesRequest (req, res) {
 }
 
 module.exports = { busDetails , handleFindAllBusesRequest}
-
